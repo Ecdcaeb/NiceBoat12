@@ -88,6 +88,13 @@ public class NiceBoat implements IFMLLoadingPlugin {
                                 }
 
                                 @Override
+                                public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+                                    if("func_184454_a".equals(owner) || "applyYawToEntity".equals(owner)) {
+                                        visitInsn(Opcodes.POP2);
+                                    } else super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
+                                }
+
+                                @Override
                                 public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
                                     if ("field_70177_z".equals(name) || "rotationYaw".equals(name)) {
                                         if (opcode == Opcodes.PUTFIELD) {
