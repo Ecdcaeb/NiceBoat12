@@ -44,13 +44,13 @@ public class NiceBoat implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
         return new String[]{
-                "mods.Hileb.niceboat.NiceBoat&Transformer"
+                "mods.Hileb.niceboat.NiceBoat$Transformer"
         };
     }
 
     @Override
     public String getModContainerClass() {
-        return "mods.Hileb.niceboat.NiceBoat&Container";
+        return "mods.Hileb.niceboat.NiceBoat$Container";
     }
 
     @Nullable
@@ -72,7 +72,7 @@ public class NiceBoat implements IFMLLoadingPlugin {
     public static class Transformer implements net.minecraft.launchwrapper.IClassTransformer {
         @Override
         public byte[] transform(String name, String transformedName, byte[] basicClass) {
-            if (basicClass != null && "".equals(transformedName)) {
+            if (basicClass != null && "net.minecraft.entity.item.EntityBoat".equals(transformedName)) {
                 ClassWriter classWriter = new ClassWriter(0);
                 new ClassReader(basicClass).accept(new ClassVisitor(ASM_API, classWriter) {
                     @Override
