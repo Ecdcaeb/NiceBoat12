@@ -22,6 +22,8 @@ import java.io.InputStreamReader;
 
 import org.objectweb.asm.*;
 
+import org.apache.commons.lang3.SystemUtils;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.util.math.MathHelper;
@@ -30,6 +32,7 @@ import net.minecraft.util.math.MathHelper;
 @IFMLLoadingPlugin.Name(Tags.MOD_ID)
 public class NiceBoat implements IFMLLoadingPlugin {
 
+    public static final int ASM_API = SystemUtils.IS_JAVA_1_8 ? (5 << 16 | 0 << 8) ? (9 << 16 | 0 << 8); // ASM5 : ASM9
     public static final Logger LOGGER = LogManager.getLogger(Tags.MOD_NAME);
 
     @Override
@@ -60,7 +63,7 @@ public class NiceBoat implements IFMLLoadingPlugin {
         return null;
     }
 
-    public static class Transformer implements IClassTransformer {
+    public static class Transformer implements net.minecraft.launchwrapper.IClassTransformer {
         @Override
         public byte[] transform(String name, String transformedName, byte[] basicClass) {
             if (basicClass != null && "".equals(transformedName)) {
@@ -99,7 +102,7 @@ public class NiceBoat implements IFMLLoadingPlugin {
         }
     }
 
-    public class Container extends DummyModContainer {
+    public static class Container extends DummyModContainer {
 
         public Container(){
             super(decodeMcModInfo(Container.class.getResourceAsStream("mcmod.info")).get(Tags.MOD_ID));
