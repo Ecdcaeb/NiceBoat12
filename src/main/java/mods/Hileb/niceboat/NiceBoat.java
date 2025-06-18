@@ -123,7 +123,7 @@ public class NiceBoat implements IFMLLoadingPlugin {
             JsonElement element = new JsonParser().parse(new InputStreamReader(stream));
             if (element instanceof JsonArray) {
                 JsonArray array = (JsonArray) element;
-                Map<String, ModMetadata> map = HashMap.newHashMap(array.size());
+                Map<String, ModMetadata> map = new HashMap<>(array.size());
                 for (JsonElement element1 : array) {
                     ModMetadata modMetadata = decodeMetaData(element);
                     map.put(modMetadata.modId, modMetadata);
@@ -131,7 +131,9 @@ public class NiceBoat implements IFMLLoadingPlugin {
                 return map;
             } else {
                 ModMetadata modMetadata = decodeMetaData(element);
-                return Map.of(modMetadata.modId, modMetadata);
+                Map<String, ModMetadata> map = new HashMap<>(1);
+                map.put(modMetadata.modId, modMetadata);
+                return map;
             }
         }
 
