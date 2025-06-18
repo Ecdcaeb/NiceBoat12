@@ -38,7 +38,7 @@ import net.minecraft.util.math.MathHelper;
 @IFMLLoadingPlugin.Name(Tags.MOD_ID)
 public class NiceBoat implements IFMLLoadingPlugin {
 
-    public static final int ASM_API = SystemUtils.IS_JAVA_1_8 ? (5 << 16 | 0 << 8) ? (9 << 16 | 0 << 8); // ASM5 : ASM9
+    public static final int ASM_API = SystemUtils.IS_JAVA_1_8 ? (5 << 16 | 0 << 8) : (9 << 16 | 0 << 8); // ASM5 : ASM9
     public static final Logger LOGGER = LogManager.getLogger(Tags.MOD_NAME);
 
     @Override
@@ -74,11 +74,11 @@ public class NiceBoat implements IFMLLoadingPlugin {
         public byte[] transform(String name, String transformedName, byte[] basicClass) {
             if (basicClass != null && "".equals(transformedName)) {
                 ClassWriter classWriter = new ClassWriter(0);
-                new ClassReader(basicClass).accept(new ClassVisitor(Opcodes.ASM9, classWriter) {
+                new ClassReader(basicClass).accept(new ClassVisitor(ASM_API, classWriter) {
                     @Override
                     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
                         if("func_184232_k".equals(name) || "updatePassenger".equals(name)) {
-                            return new MethodVisitor(Opcodes.ASM9, super.visitMethod(access, name, descriptor, signature, exceptions)) {
+                            return new MethodVisitor(ASM_API , super.visitMethod(access, name, descriptor, signature, exceptions)) {
                                 @Override
                                 public void visitCode() {
                                     super.visitCode();
