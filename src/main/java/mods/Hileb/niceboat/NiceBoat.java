@@ -111,86 +111,19 @@ public class NiceBoat implements IFMLLoadingPlugin {
     public static class Container extends DummyModContainer {
 
         public Container(){
-            super(decodeMcModInfo(Container.class.getResourceAsStream("mcmod.info")).get(Tags.MOD_ID));
+            super(new ModMetadata());
+            ModMetadata metadata=this.getMetadata();
+            metadata.modId=Tags.MOD_ID;
+            metadata.name=Tags.MOD_NAME;
+            metadata.description="This mod will make the player's perspective not move with the ship's direction when controlling the ship's movement. At the same time, if the angle between the ship's heading and the player's perspective is less than 22.5°, the ship's heading will gradually be corrected to align with the player's perspective.";
+            metadata.version=Tags.VERSION;
+            metadata.url="https://github.com/Ecdcaeb/NiceBoat12/";
+            metadata.authorList.add("Hileb");
         }
 
         @Override
         public boolean registerBus(EventBus bus, LoadController controller) {
             return true;
-        }
-
-        public static Map<String, ModMetadata> decodeMcModInfo(InputStream stream) {
-            JsonElement element = new JsonParser().parse(new InputStreamReader(stream));
-            if (element instanceof JsonArray) {
-                JsonArray array = (JsonArray) element;
-                Map<String, ModMetadata> map = new HashMap<>(array.size());
-                for (JsonElement element1 : array) {
-                    ModMetadata modMetadata = decodeMetaData(element);
-                    map.put(modMetadata.modId, modMetadata);
-                }
-                return map;
-            } else {
-                ModMetadata modMetadata = decodeMetaData(element);
-                Map<String, ModMetadata> map = new HashMap<>(1);
-                map.put(modMetadata.modId, modMetadata);
-                return map;
-            }
-        }
-
-        @SuppressWarnings("all")
-        public static ModMetadata decodeMetaData(JsonElement jsonElement){
-            JsonObject json = jsonElement.getAsJsonObject();
-            ModMetadata metadata = new ModMetadata();
-
-            //basic message
-            metadata.modId = json.get("modid").getAsString();
-            metadata.name = json.get("name").getAsString();
-
-            //optional message
-            if (json.has("description")) metadata.description = json.get("description").getAsString();
-            if (json.has("credits")) metadata.credits = json.get("credits").getAsString();
-            if (json.has("url")) metadata.url = json.get("url").getAsString();
-            if (json.has("updateJSON")) metadata.updateJSON = json.get("updateJSON").getAsString();
-            if (json.has("logoFile")) metadata.logoFile = json.get("logoFile").getAsString();
-            if (json.has("version")) metadata.version = json.get("version").getAsString();
-            if (json.has("parent")) metadata.parent = json.get("parent").getAsString();
-            if (json.has("useDependencyInformation")) metadata.useDependencyInformation = json.get("useDependencyInformation").getAsBoolean();
-            if (metadata.useDependencyInformation){
-                if (json.has("requiredMods")){
-                    for(JsonElement element : json.getAsJsonArray("requiredMods")){
-                        metadata.requiredMods.add(VersionParser.parseVersionReference(element.getAsString()));
-                    }
-                }
-                if (json.has("dependencies")){
-                    for(JsonElement element : json.getAsJsonArray("dependencies")){
-                        metadata.dependencies.add(VersionParser.parseVersionReference(element.getAsString()));
-                    }
-                }
-                if (json.has("dependants")){
-                    for(JsonElement element : json.getAsJsonArray("dependants")){
-                        metadata.dependants.add(VersionParser.parseVersionReference(element.getAsString()));
-                    }
-                }
-            }
-            if (json.has("authorList")){
-                for(JsonElement element : json.getAsJsonArray("authorList")){
-                    metadata.authorList.add(element.getAsString());
-                }
-            }
-            if (json.has("screenshots")){ // this field was never used
-                JsonArray array = json.getAsJsonArray("screenshots");
-                int size = array.size();
-                String[] screenshots = new String[size];
-                for (int i = 0; i < size; i++){
-                    screenshots[i] = array.get(i).getAsString();
-                }
-                metadata.screenshots = screenshots;
-            }else metadata.screenshots = new String[0];
-            if (json.has("updateUrl")){ // this field is out of date
-                metadata.updateUrl = json.get("updateUrl").getAsString();
-            }
-
-            return metadata;
         }
     }
 
