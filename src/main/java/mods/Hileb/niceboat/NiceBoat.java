@@ -112,7 +112,8 @@ public class NiceBoat implements IFMLLoadingPlugin {
 
         public static Map<String, ModMetadata> decodeMcModInfo(InputStream stream) {
             JsonElement element = new JsonParser().parse(new InputStreamReader(stream));
-            if (element instanceof JsonArray array) {
+            if (element instanceof JsonArray) {
+                JsonArray array = (JsonArray) element;
                 Map<String, ModMetadata> map = HashMap.newHashMap(array.size());
                 for (JsonElement element1 : array) {
                     ModMetadata modMetadata = decodeMetaData(element);
