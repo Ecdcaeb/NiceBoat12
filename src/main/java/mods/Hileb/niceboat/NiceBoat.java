@@ -84,7 +84,7 @@ public class NiceBoat implements IFMLLoadingPlugin {
                                     super.visitCode();
                                     this.visitVarInsn(Opcodes.ALOAD, 0);
                                     this.visitVarInsn(Opcodes.ALOAD, 1);
-                                    this.visitMethodInsn(Opcodes.INVOKESTATE, "mods/Hileb/niceboat/NiceBoat$Hook", "onUpdate", "(Lnet/minecraft/entity/item/EntityBoat;Lnet/minecraft/entity/Entity;)V", false);
+                                    this.visitMethodInsn(Opcodes.INVOKESTATIC, "mods/Hileb/niceboat/NiceBoat$Hook", "onUpdate", "(Lnet/minecraft/entity/item/EntityBoat;Lnet/minecraft/entity/Entity;)V", false);
                                 }
 
                                 @Override
